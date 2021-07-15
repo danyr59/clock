@@ -1,5 +1,6 @@
 import ControlSession from "./component/ControlSession.jsx";
 import Timer from "./component/Timer.jsx";
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 Date.prototype.getFormatMinSecond = function () {
   let format = this.toLocaleTimeString();
@@ -90,6 +91,9 @@ function App() {
     // , [timeLeft]
   });
   // console.log(date, timeLeft, new Date());
+=======
+function App() {
+>>>>>>> parent of 2a9864e... añadiendo funcionalidad para temporizador
   return (
     <div className="App ">
       <header className="">
@@ -97,35 +101,17 @@ function App() {
       </header>
       <div className="row w-50">
         <div className="col">
-          <ControlSession
-            id={"break-label"}
-            title={"Break Length"}
-            value={5}
-            idDecrement={"break-decrement"}
-            idIncrement={"break-increment"}
-            idLabel={"break-length"}
-          />
+          <ControlSession title={"Break Length"} value={5} />
         </div>
         <div className="col">
-          <ControlSession
-            id={"session-label"}
-            title={"Session Length"}
-            value={25}
-            idDecrement={"session-decrement"}
-            idIncrement={"session-increment"}
-            idLabel={"session-length"}
-          />
+          <ControlSession title={"Session Length"} value={25} />
         </div>
         <div className="border border-5 rounded-pill">
-          <Timer value={getTimeLeft(timeLeft)} />
+          <Timer value={0} />
         </div>
         <div className="row">
           <div className="col">
-            <button
-              onClick={startStopOnClick}
-              className="btn btn-info"
-              id="start_stop"
-            >
+            <button className="btn btn-info" id="start_stop">
               <i class="bi bi-play-fill"></i>
               <i class="bi bi-pause-fill"></i>
             </button>
