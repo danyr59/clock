@@ -1,5 +1,3 @@
-// import logo from './logo.svg';
-import "./App.scss";
 import ControlSession from "./component/ControlSession.jsx";
 import Timer from "./component/Timer.jsx";
 import React, { useState, useEffect } from "react";
@@ -38,13 +36,14 @@ const inizializeTimeLeft = (length) => {
   return timeLeft;
 };
 const getDate = function (timeLeft) {
-  const difference = timeLeft * 60 * 1000;
+  const difference = timeLeft.minutes * 60 * 1000 + timeLeft.seg * 1000;
   return new Date(+new Date() + difference);
 };
 function App() {
-  const [date, setDate] = useState(getDate(25));
-  const [timeLeft, setTimeLeft] = useState(inizializeTimeLeft(25));
+  const [date, setDate] = useState(getDate({ minutes: 10, seg: 0 }));
+  const [timeLeft, setTimeLeft] = useState(inizializeTimeLeft(10));
   const [startStop, setStartStop] = useState(false);
+
   const calculateTimeLeft = () => {
     const difference = +date - +new Date();
     let timeLeft = {};
@@ -62,6 +61,8 @@ function App() {
     return timeLeft;
   };
   function getTimeLeft({ year, month, date, hours, minutes, seconds, ms }) {
+    let a = new Date(year, month, date, hours, minutes, seconds, ms);
+    console.log(a, new Date());
     return new Date(
       year,
       month,
@@ -74,16 +75,21 @@ function App() {
   }
   function startStopOnClick() {
     setStartStop(!startStop);
+    setDate(getDate({ minutes: 10, seg: 0 }));
+    setTimeLeft(inizializeTimeLeft(10));
   }
   useEffect(() => {
     if (startStop) {
+      console.log("useEffect");
       const timer = setTimeout(() => {
         setTimeLeft(calculateTimeLeft());
       }, 1000);
       return () => clearTimeout(timer);
     }
     // Clear timeout if the component is unmounted
+    // , [timeLeft]
   });
+  // console.log(date, timeLeft, new Date());
   return (
     <div className="App ">
       <header className="">
