@@ -36,15 +36,15 @@ const inizializeTimeLeft = (length) => {
   }
   return timeLeft;
 };
-const getDate = function (timeLeft) {
-  const difference = timeLeft.minutes * 60 * 1000 + timeLeft.seg * 1000;
+const getDate = function ({ minutes: minutes, seconds: seg, ms: ms }) {
+  //402 tiempo de retrazo producido
+  const difference = minutes * 60 * 1000 + seg * 1000 + ms + 402;
   return new Date(+new Date() + difference);
 };
 function App() {
-  const [date, setDate] = useState(getDate({ minutes: 10, seg: 0 }));
-  const [timeLeft, setTimeLeft] = useState(inizializeTimeLeft(10));
+  const [date, setDate] = useState(getDate({ minutes: 25, seg: 0, ms: 0 }));
+  const [timeLeft, setTimeLeft] = useState(inizializeTimeLeft(25));
   const [startStop, setStartStop] = useState(false);
-
   const calculateTimeLeft = () => {
     const difference = +date - +new Date();
     let timeLeft = {};
@@ -59,11 +59,12 @@ function App() {
         ms: 0,
       };
     }
+    console.log(timeLeft);
     return timeLeft;
   };
   function getTimeLeft({ year, month, date, hours, minutes, seconds, ms }) {
-    let a = new Date(year, month, date, hours, minutes, seconds, ms);
-    console.log(a, new Date());
+    // let a = new Date(year, month, date, hours, minutes, seconds, ms);
+    // console.log(a, new Date());
     return new Date(
       year,
       month,
@@ -76,8 +77,11 @@ function App() {
   }
   function startStopOnClick() {
     setStartStop(!startStop);
-    setDate(getDate({ minutes: 10, seg: 0 }));
-    setTimeLeft(inizializeTimeLeft(10));
+    setDate(getDate(timeLeft));
+
+    // setStartStop(!startStop);
+    // setDate(getDate({ minutes: 10, seg: 0 }));
+    // setTimeLeft(inizializeTimeLeft(10));
   }
   useEffect(() => {
     if (startStop) {
@@ -87,10 +91,8 @@ function App() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-    // Clear timeout if the component is unmounted
     // , [timeLeft]
   });
-  // console.log(date, timeLeft, new Date());
   return (
     <div className="App ">
       <header className="">

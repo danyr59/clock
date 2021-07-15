@@ -6,7 +6,9 @@ function Timer(props) {
       <div id="timer-label">
         <h3>Session</h3>
       </div>
-      <div id="time-left">{props.value}</div>
+      <div translate="no" id="time-left">
+        {props.value}
+      </div>
     </div>
   );
 }
