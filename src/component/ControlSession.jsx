@@ -3,15 +3,17 @@ import "../style/ControlSession.scss";
 function ControlSession(props) {
   return (
     <div className="container">
-      <h5>{props.title}</h5>
+      <h5 id={props.id}>{props.title}</h5>
       <div className="row">
-        <div className="col">
+        <button id={props.idDecrement} className="col btn-info">
           <i class="bi bi-caret-down-fill"></i>
+        </button>
+        <div id={props.idLabel} className="col">
+          {props.value}
         </div>
-        <div className="col">{props.value}</div>
-        <div className="col">
+        <button id={props.idIncrement} className="col btn btn-info">
           <i class="bi bi-caret-up-fill"></i>
-        </div>
+        </button>
       </div>
     </div>
   );
