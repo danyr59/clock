@@ -1,6 +1,6 @@
 import ControlSession from "./component/ControlSession.jsx";
 import Timer from "./component/Timer.jsx";
-<<<<<<< HEAD
+import "./App.scss";
 import React, { useState, useEffect } from "react";
 Date.prototype.getFormatMinSecond = function () {
   let format = this.toLocaleTimeString();
@@ -91,9 +91,6 @@ function App() {
     // , [timeLeft]
   });
   // console.log(date, timeLeft, new Date());
-=======
-function App() {
->>>>>>> parent of 2a9864e... añadiendo funcionalidad para temporizador
   return (
     <div className="App ">
       <header className="">
@@ -107,11 +104,15 @@ function App() {
           <ControlSession title={"Session Length"} value={25} />
         </div>
         <div className="border border-5 rounded-pill">
-          <Timer value={0} />
+          <Timer value={getTimeLeft(timeLeft)} />
         </div>
         <div className="row">
           <div className="col">
-            <button className="btn btn-info" id="start_stop">
+            <button
+              onClick={startStopOnClick}
+              className="btn btn-info"
+              id="start_stop"
+            >
               <i class="bi bi-play-fill"></i>
               <i class="bi bi-pause-fill"></i>
             </button>
