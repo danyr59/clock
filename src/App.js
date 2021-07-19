@@ -20,7 +20,7 @@ Date.prototype.setFormatMinSecond = function (min, seg) {
 //   }
 //
 // console.log(ownProps);
-const inizializeTimeLeft = (length) => {
+const inizializeTimeLeft = function (length) {
   const difference = length * 60 * 1000;
   let timeLeft = {};
   if (difference > 0) {
@@ -37,15 +37,20 @@ const inizializeTimeLeft = (length) => {
   return timeLeft;
 };
 const getDate = function ({ minutes: minutes, seconds: seg, ms: ms }) {
-  //402 tiempo de retrazo producido
+  //402 ms tiempo de retrazo producido
+  console.log(minutes, seg, ms);
   const difference = minutes * 60 * 1000 + seg * 1000 + ms + 402;
   return new Date(+new Date() + difference);
 };
 function App() {
-  const [date, setDate] = useState(getDate({ minutes: 25, seg: 0, ms: 0 }));
+  const [date, setDate] = useState(getDate({ minutes: 25, seconds: 0, ms: 0 }));
   const [timeLeft, setTimeLeft] = useState(inizializeTimeLeft(25));
   const [startStop, setStartStop] = useState(false);
+  const [breakLength, setBreakLength] = useState(5);
+  const [sessionLength, setSessionLength] = useState(25);
+  const [reboot, setReboot] = useState(false);
   const calculateTimeLeft = () => {
+    console.log(`date: ${date}`);
     const difference = +date - +new Date();
     let timeLeft = {};
     if (difference > 0) {
@@ -59,7 +64,6 @@ function App() {
         ms: 0,
       };
     }
-    console.log(timeLeft);
     return timeLeft;
   };
   function getTimeLeft({ year, month, date, hours, minutes, seconds, ms }) {
@@ -78,14 +82,9 @@ function App() {
   function startStopOnClick() {
     setStartStop(!startStop);
     setDate(getDate(timeLeft));
-
-    // setStartStop(!startStop);
-    // setDate(getDate({ minutes: 10, seg: 0 }));
-    // setTimeLeft(inizializeTimeLeft(10));
   }
   useEffect(() => {
     if (startStop) {
-      console.log("useEffect");
       const timer = setTimeout(() => {
         setTimeLeft(calculateTimeLeft());
       }, 1000);
@@ -93,6 +92,24 @@ function App() {
     }
     // , [timeLeft]
   });
+  function rebootTimeLeft() {
+    setReboot(true);
+    setStartStop(false);
+    setDate(getDate({ minutes: 25, seconds: 0, ms: 0 }));
+    setTimeLeft(inizializeTimeLeft(25));
+    setBreakLength(5);
+    setSessionLength(25);
+  }
+  function updateValue(value) {
+    // setStartStop(false);
+    setDate(getDate({ minutes: value, seconds: 0, ms: 0 }));
+    setTimeLeft(inizializeTimeLeft(value));
+  }
+  function updateValueT(value) {
+    // setStartStop(true);
+    setDate(getDate({ minutes: value, seconds: 0, ms: 0 }));
+    setTimeLeft(inizializeTimeLeft(value));
+  }
   return (
     <div className="App ">
       <header className="">
@@ -100,13 +117,45 @@ function App() {
       </header>
       <div className="row w-50">
         <div className="col">
-          <ControlSession title={"Break Length"} value={5} />
+          <ControlSession
+            // handlerTimeLeft={false}
+            handlerSelectorTime={true}
+            idLabel={"break-label"}
+            idDecrement={"break-decrement"}
+            idIncrement={"break-increment"}
+            idLength={"break-length"}
+            startStop={startStop}
+            reboot={reboot}
+            setReboot={setReboot}
+            updateValuesT={updateValueT}
+            title={"Break Length"}
+            value={breakLength}
+            timeLeft={timeLeft}
+          />
         </div>
         <div className="col">
-          <ControlSession title={"Session Length"} value={25} />
+          <ControlSession
+            // handlerTimeLeft={true}
+            handlerSelectorTime={false}
+            idLabel={"session-label"}
+            idDecrement={"session-decrement"}
+            idIncrement={"session-increment"}
+            idLength={"session-length"}
+            startStop={startStop}
+            reboot={reboot}
+            setReboot={setReboot}
+            updateValuesT={updateValue}
+            updateValues={updateValue}
+            title={"Session Length"}
+            value={sessionLength}
+            timeLeft={timeLeft}
+          />
         </div>
         <div className="border border-5 rounded-pill">
-          <Timer value={getTimeLeft(timeLeft)} />
+          <Timer
+            hour={timeLeft.hours == 1 ? true : false}
+            value={getTimeLeft(timeLeft)}
+          />
         </div>
         <div className="row">
           <div className="col">
@@ -120,7 +169,11 @@ function App() {
             </button>
           </div>
           <div className="col">
-            <button className="btn btn-info" id="reset">
+            <button
+              onClick={rebootTimeLeft}
+              className="btn btn-info"
+              id="reset"
+            >
               <i class="bi bi-arrow-repeat"></i>
             </button>
           </div>

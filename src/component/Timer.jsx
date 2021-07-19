@@ -3,12 +3,8 @@ import "../style/Timer.scss";
 function Timer(props) {
   return (
     <div>
-      <div id="timer-label">
-        <h3>Session</h3>
-      </div>
-      <div translate="no" id="time-left">
-        {props.value}
-      </div>
+      <h3 id="timer-label">Session</h3>
+      <div id="time-left">{props.hour ? "60:00" : props.value}</div>
     </div>
   );
 }
