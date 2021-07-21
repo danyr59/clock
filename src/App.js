@@ -4,22 +4,11 @@ import "./App.scss";
 import React, { useState, useEffect } from "react";
 Date.prototype.getFormatMinSecond = function () {
   let format = this.toLocaleTimeString();
-  return format.slice(3);
-  // return this.getMinutes() + ":" + this.getSeconds();
+  return this.getHours() == 1 ? "60:00" : format.slice(3);
 };
 Date.prototype.setFormatMinSecond = function (min, seg) {
   this.setMinutes(min, seg);
 };
-//   let a = new Date();
-//   console.log(a);
-//   let ownProps = [];
-//   for (let property in Date) {
-//     if (Date.hasOwnProperty(property)) {
-//       ownProps.push(property);
-//     }
-//   }
-//
-// console.log(ownProps);
 const inizializeTimeLeft = function (length) {
   const difference = length * 60 * 1000;
   let timeLeft = {};
@@ -36,10 +25,16 @@ const inizializeTimeLeft = function (length) {
   }
   return timeLeft;
 };
-const getDate = function ({ minutes: minutes, seconds: seg, ms: ms }) {
+const getDate = function ({
+  hours: hours = 0,
+  minutes: minutes,
+  seconds: seg,
+  ms: ms,
+}) {
   //402 ms tiempo de retrazo producido
-  console.log(minutes, seg, ms);
-  const difference = minutes * 60 * 1000 + seg * 1000 + ms + 402;
+  // console.log(minutes, seg, ms);
+  const difference =
+    hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seg * 1000 + ms + 402;
   return new Date(+new Date() + difference);
 };
 function App() {
@@ -49,6 +44,7 @@ function App() {
   const [breakLength, setBreakLength] = useState(5);
   const [sessionLength, setSessionLength] = useState(25);
   const [reboot, setReboot] = useState(false);
+  const [timerLabel, setTimerLabel] = useState("Session");
   const calculateTimeLeft = () => {
     console.log(`date: ${date}`);
     const difference = +date - +new Date();
@@ -67,8 +63,6 @@ function App() {
     return timeLeft;
   };
   function getTimeLeft({ year, month, date, hours, minutes, seconds, ms }) {
-    // let a = new Date(year, month, date, hours, minutes, seconds, ms);
-    // console.log(a, new Date());
     return new Date(
       year,
       month,
@@ -99,16 +93,21 @@ function App() {
     setTimeLeft(inizializeTimeLeft(25));
     setBreakLength(5);
     setSessionLength(25);
+    setTimerLabel("Session");
   }
   function updateValue(value) {
-    // setStartStop(false);
-    setDate(getDate({ minutes: value, seconds: 0, ms: 0 }));
+    setDate(
+      value == 60
+        ? getDate({ hours: value, minutes: 0, seconds: 0, ms: 0 })
+        : getDate({ minutes: value, seconds: 0, ms: 0 })
+    );
     setTimeLeft(inizializeTimeLeft(value));
   }
-  function updateValueT(value) {
-    // setStartStop(true);
-    setDate(getDate({ minutes: value, seconds: 0, ms: 0 }));
-    setTimeLeft(inizializeTimeLeft(value));
+  function isZero() {
+    if (timeLeft.hours != 1 && timeLeft.minutes == 0 && timeLeft.seconds == 0) {
+      return true;
+    }
+    return false;
   }
   return (
     <div className="App ">
@@ -118,44 +117,44 @@ function App() {
       <div className="row w-50">
         <div className="col">
           <ControlSession
-            // handlerTimeLeft={false}
-            handlerSelectorTime={true}
             idLabel={"break-label"}
             idDecrement={"break-decrement"}
             idIncrement={"break-increment"}
             idLength={"break-length"}
+            title={"Break Length"}
+            setTimerLabel={setTimerLabel}
+            timerLabel={"break"}
+            zero={isZero()}
+            handlerSelectorTime={false}
             startStop={startStop}
             reboot={reboot}
             setReboot={setReboot}
-            updateValuesT={updateValueT}
-            title={"Break Length"}
+            updateValues={updateValue}
             value={breakLength}
             timeLeft={timeLeft}
           />
         </div>
         <div className="col">
           <ControlSession
-            // handlerTimeLeft={true}
-            handlerSelectorTime={false}
             idLabel={"session-label"}
             idDecrement={"session-decrement"}
             idIncrement={"session-increment"}
             idLength={"session-length"}
+            title={"Session Length"}
+            setTimerLabel={setTimerLabel}
+            timerLabel={"Session"}
+            zero={isZero()}
+            handlerSelectorTime={true}
             startStop={startStop}
             reboot={reboot}
             setReboot={setReboot}
-            updateValuesT={updateValue}
             updateValues={updateValue}
-            title={"Session Length"}
             value={sessionLength}
             timeLeft={timeLeft}
           />
         </div>
         <div className="border border-5 rounded-pill">
-          <Timer
-            hour={timeLeft.hours == 1 ? true : false}
-            value={getTimeLeft(timeLeft)}
-          />
+          <Timer timerLabel={timerLabel} value={getTimeLeft(timeLeft)} />
         </div>
         <div className="row">
           <div className="col">

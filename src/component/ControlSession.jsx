@@ -2,22 +2,40 @@ import "../style/ControlSession.scss";
 import React, { useState, useEffect } from "react";
 function ControlSession(props) {
   const [length, setLength] = useState(props.value);
-  const [zero, setZero] = useState(false);
   const [handlerSelectorTime, setHandlerSelectorTime] = useState(
     props.handlerSelectorTime
   );
 
   function handlerArrowUp() {
     if (length >= 60) return;
-    if (props.startStop) return;
-    setTimeout(() => setLength(length + 1), 50);
-    if (props.updateValues) props.updateValues(length + 1);
+    if (props.startStop == true) return;
+    handlerSelectionValues(length + 1);
+    setLength(length + 1);
   }
   function handlerArrowDown() {
     if (length <= 1) return;
-    if (props.startStop) return;
-    setTimeout(() => setLength(length - 1), 50);
-    if (props.updateValues) props.updateValues(length - 1);
+    if (props.startStop == true) return;
+    handlerSelectionValues(length - 1);
+    setLength(length - 1);
+  }
+  /**
+   * funcion controla quien puede modificar los valores del timer cuando esta en pause
+   * @param valor por el cual va a ser actualizado el timer
+   */
+  function handlerSelectionValues(length) {
+    // si esta pausado el timer no se pueden modificar los valores
+    if (handlerSelectorTime) props.updateValues(length);
+  }
+  /**
+   * funcion que selecciona el valor siguiente a actualizar
+   */
+  function updatesValues() {
+    // si esta pausado el timer no se pueden modificar los valores y esta corriendo el reloj
+    if (props.startStop == false) return;
+    if (handlerSelectorTime) {
+      props.updateValues(length);
+      props.setTimerLabel(props.timerLabel);
+    }
   }
   /**
    *  actualiza el valor en caso de actualizarse el temporizador
@@ -26,35 +44,30 @@ function ControlSession(props) {
     if (props.reboot) {
       setLength(props.value);
       props.setReboot(false);
-      setZero(false);
       setHandlerSelectorTime(props.handlerSelectorTime);
     }
   }
   useEffect(() => {
-    isZero();
     updateReboot();
-    if (zero && handlerSelectorTime) {
-      props.updateValuesT(length);
-    }
-    if (zero) {
+    if (props.zero) {
       setHandlerSelectorTime(!handlerSelectorTime);
-      setZero(false);
+      return;
     }
-  });
-  function isZero() {
-    if (props.timeLeft.minutes == 0 && props.timeLeft.seconds == 0) {
-      setTimeout(() => {
-        console.log("isZero()");
-        setZero(true);
-      }, 1000);
-    }
-  }
-  console.log(
-    zero,
-    props.timeLeft.minutes,
-    props.timeLeft.seconds,
-    handlerSelectorTime
-  );
+    updatesValues();
+
+    // if (zero && handlerSelectorTime) {
+    //   handlerSelectorTimer();
+    // }
+    // if (zero) {
+    //   setHandlerSelectorTime(!handlerSelectorTime);
+    //   setZero(false);
+    // }
+  }, [props.zero, props.reboot]);
+  // console.log(
+  //   `${props.idLabel}\n`,
+  //   `props.zero = ${props.zero}\n`,
+  //   `handlerSelectorTime ${handlerSelectorTime}\n\n`
+  // );
   return (
     <div className="container">
       <h5 id={props.idLabel}>{props.title}</h5>
@@ -69,7 +82,6 @@ function ControlSession(props) {
           </button>
         </div>
         <div id={props.idLength} translate="no" className="col">
-          {/*props.reboot ? props.value : length*/}
           {length}
         </div>
         <div className="col">
