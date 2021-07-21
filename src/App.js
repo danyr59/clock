@@ -45,6 +45,7 @@ function App() {
   const [sessionLength, setSessionLength] = useState(25);
   const [reboot, setReboot] = useState(false);
   const [timerLabel, setTimerLabel] = useState("Session");
+  const audioBeep = document.getElementById("beep");
   const calculateTimeLeft = () => {
     console.log(`date: ${date}`);
     const difference = +date - +new Date();
@@ -86,6 +87,11 @@ function App() {
     }
     // , [timeLeft]
   });
+  function buzzer(timer) {
+    if (timer == 0) {
+      audioBeep.play();
+    }
+  }
   function rebootTimeLeft() {
     setReboot(true);
     setStartStop(false);
@@ -94,6 +100,10 @@ function App() {
     setBreakLength(5);
     setSessionLength(25);
     setTimerLabel("Session");
+    if (audioBeep) {
+      audioBeep.pause();
+      audioBeep.currentTime = 0;
+    }
   }
   function updateValue(value) {
     setDate(
@@ -105,6 +115,7 @@ function App() {
   }
   function isZero() {
     if (timeLeft.hours != 1 && timeLeft.minutes == 0 && timeLeft.seconds == 0) {
+      buzzer(0);
       return true;
     }
     return false;
@@ -178,6 +189,11 @@ function App() {
           </div>
         </div>
       </div>
+      <audio
+        id="beep"
+        preload="auto"
+        src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+      />
     </div>
   );
 }
