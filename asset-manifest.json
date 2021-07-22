@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/clock/static/css/main.910d4548.chunk.css",
+    "main.js": "/clock/static/js/main.46dcd54e.chunk.js",
+    "main.js.map": "/clock/static/js/main.46dcd54e.chunk.js.map",
+    "runtime-main.js": "/clock/static/js/runtime-main.f55c68cf.js",
+    "runtime-main.js.map": "/clock/static/js/runtime-main.f55c68cf.js.map",
+    "static/css/2.6be0cee1.chunk.css": "/clock/static/css/2.6be0cee1.chunk.css",
+    "static/js/2.cd3908f0.chunk.js": "/clock/static/js/2.cd3908f0.chunk.js",
+    "static/js/2.cd3908f0.chunk.js.map": "/clock/static/js/2.cd3908f0.chunk.js.map",
+    "static/js/3.f6924afd.chunk.js": "/clock/static/js/3.f6924afd.chunk.js",
+    "static/js/3.f6924afd.chunk.js.map": "/clock/static/js/3.f6924afd.chunk.js.map",
+    "index.html": "/clock/index.html",
+    "static/css/2.6be0cee1.chunk.css.map": "/clock/static/css/2.6be0cee1.chunk.css.map",
+    "static/css/main.910d4548.chunk.css.map": "/clock/static/css/main.910d4548.chunk.css.map",
+    "static/js/2.cd3908f0.chunk.js.LICENSE.txt": "/clock/static/js/2.cd3908f0.chunk.js.LICENSE.txt",
+    "static/media/bootstrap-icons.css": "/clock/static/media/bootstrap-icons.dfd0ea12.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f55c68cf.js",
+    "static/css/2.6be0cee1.chunk.css",
+    "static/js/2.cd3908f0.chunk.js",
+    "static/css/main.910d4548.chunk.css",
+    "static/js/main.46dcd54e.chunk.js"
+  ]
+}
