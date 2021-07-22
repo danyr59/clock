@@ -121,53 +121,59 @@ function App() {
     return false;
   }
   return (
-    <div className="App ">
-      <header className="">
-        <h1>25 + 5 Clock</h1>
-      </header>
-      <div className="row w-50">
-        <div className="col">
-          <ControlSession
-            idLabel={"break-label"}
-            idDecrement={"break-decrement"}
-            idIncrement={"break-increment"}
-            idLength={"break-length"}
-            title={"Break Length"}
-            setTimerLabel={setTimerLabel}
-            timerLabel={"break"}
-            zero={isZero()}
-            handlerSelectorTime={false}
-            startStop={startStop}
-            reboot={reboot}
-            setReboot={setReboot}
-            updateValues={updateValue}
-            value={breakLength}
-            timeLeft={timeLeft}
-          />
+    <div className="App">
+      <div className="container-md">
+        <header className="row mb-3">
+          <h1 className="col-sm">25 + 5 Clock</h1>
+        </header>
+        <div className="row row-cols-auto justify-content-center gy-4">
+          <div className="col ">
+            <ControlSession
+              idLabel={"break-label"}
+              idDecrement={"break-decrement"}
+              idIncrement={"break-increment"}
+              idLength={"break-length"}
+              title={"Break Length"}
+              setTimerLabel={setTimerLabel}
+              timerLabel={"break"}
+              zero={isZero()}
+              handlerSelectorTime={false}
+              startStop={startStop}
+              reboot={reboot}
+              setReboot={setReboot}
+              updateValues={updateValue}
+              value={breakLength}
+              timeLeft={timeLeft}
+            />
+          </div>
+          <div className="col ">
+            <ControlSession
+              idLabel={"session-label"}
+              idDecrement={"session-decrement"}
+              idIncrement={"session-increment"}
+              idLength={"session-length"}
+              title={"Session Length"}
+              setTimerLabel={setTimerLabel}
+              timerLabel={"Session"}
+              zero={isZero()}
+              handlerSelectorTime={true}
+              startStop={startStop}
+              reboot={reboot}
+              setReboot={setReboot}
+              updateValues={updateValue}
+              value={sessionLength}
+              timeLeft={timeLeft}
+            />
+          </div>
         </div>
-        <div className="col">
-          <ControlSession
-            idLabel={"session-label"}
-            idDecrement={"session-decrement"}
-            idIncrement={"session-increment"}
-            idLength={"session-length"}
-            title={"Session Length"}
-            setTimerLabel={setTimerLabel}
-            timerLabel={"Session"}
-            zero={isZero()}
-            handlerSelectorTime={true}
-            startStop={startStop}
-            reboot={reboot}
-            setReboot={setReboot}
-            updateValues={updateValue}
-            value={sessionLength}
-            timeLeft={timeLeft}
-          />
+        <div className="row row-cols-auto mt-3 justify-content-center">
+          <div className="col">
+            <div className="border border-4 rounded mt-3 mb-3 p-5">
+              <Timer timerLabel={timerLabel} value={getTimeLeft(timeLeft)} />
+            </div>
+          </div>
         </div>
-        <div className="border border-5 rounded-pill">
-          <Timer timerLabel={timerLabel} value={getTimeLeft(timeLeft)} />
-        </div>
-        <div className="row">
+        <div className="row row-cols-auto mt-1 justify-content-center">
           <div className="col">
             <button
               onClick={startStopOnClick}
@@ -188,12 +194,12 @@ function App() {
             </button>
           </div>
         </div>
+        <audio
+          id="beep"
+          preload="auto"
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+        />
       </div>
-      <audio
-        id="beep"
-        preload="auto"
-        src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
-      />
     </div>
   );
 }

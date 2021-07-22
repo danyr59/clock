@@ -4,7 +4,9 @@ function Timer(props) {
   return (
     <div>
       <h3 id="timer-label">{props.timerLabel}</h3>
-      <div id="time-left">{props.value.match(/a/) ? "00:00" : props.value}</div>
+      <div translate="no" id="time-left">
+        {props.value.match(/a/) ? "00:00" : props.value}
+      </div>
     </div>
   );
 }

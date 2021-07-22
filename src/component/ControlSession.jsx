@@ -67,11 +67,17 @@ function ControlSession(props) {
   //   `${props.idLabel}\n`,
   //   `props.zero = ${props.zero}\n`,
   //   `handlerSelectorTime ${handlerSelectorTime}\n\n`
-  // );
+  // );"
   return (
-    <div className="container">
-      <h5 id={props.idLabel}>{props.title}</h5>
-      <div className="row">
+    <div className="container-sm px-0 ">
+      <div className="row row-cols-auto justify-content-center">
+        <div className="col">
+          <h5 className="" id={props.idLabel}>
+            {props.title}
+          </h5>
+        </div>
+      </div>
+      <div className="row row-cols-auto justify-content-center">
         <div className="col">
           <button
             id={props.idDecrement}
